@@ -1,0 +1,88 @@
+.checkbox-type-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-type-label {
+  font-size: 12px;
+}
+
+.checkbox-type-input {
+  margin-top: 4px;
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  font-size: 14px;
+  padding: 14px 10px;
+}
+
+.checkbox-type-options-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.checkbox-type-options-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.checkbox-type-option-item {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkbox-type-disabled-input {
+  width: 18px;
+  height: 18px;
+}
+
+.checkbox-type-edit-input {
+  font-size: 16px;
+  margin-left: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.checkbox-type-edit-button,
+.checkbox-type-delete-button {
+  border-radius: 10px;
+  padding: 4px 10px;
+  outline: none;
+  margin-left: 8px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.checkbox-type-edit-button {
+  background-color: lightgrey;
+}
+
+.checkbox-type-delete-button {
+  background-color: maroon;
+  color: white;
+}
+
+.checkbox-type-add-option {
+  margin-top: 10px;
+  display: flex;
+}
+
+.checkbox-type-add-input {
+  border-radius: 10px;
+  padding: 10px 10px;
+  outline: none;
+  border: none;
+}
+.checkbox-type-save-button {
+  border-radius: 10px;
+  padding: 8px 8px;
+  outline: none;
+  margin-left: 8px;
+  cursor: pointer;
+}

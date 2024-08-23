@@ -1,0 +1,43 @@
+.configure-view {
+    display: flex;
+    box-shadow: 4px 4px 5px black;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    flex-direction: column;
+    max-height: 70vh;
+    max-width: 30%;
+    overflow: scroll;
+    scrollbar-width: none;
+  }
+  
+  .configure-view-section {
+    margin-top: 10px;
+  }
+  
+  .configure-view-section-title {
+    margin: 0;
+  }
+  
+  .configure-view-children-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .configure-view-child {
+    cursor: pointer;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    margin: 10px;
+    border-radius: 10px;
+  }
+  
+  .configure-view-child-text {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  

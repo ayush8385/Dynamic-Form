@@ -1,0 +1,28 @@
+.field-handlers-container {
+  display: flex;
+  margin-top: 20px;
+}
+.field-handler-button {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-size: 16px;
+  font-weight: bolder;
+  border-radius: 10px;
+  display: flex;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.field-handler-button.delete {
+  background-color: maroon;
+  color: white;
+}
+
+.field-handler-button.reset {
+  background-color: lightgray;
+}
+
+.field-handler-button.save {
+  background-color: green;
+  color: white;
+}

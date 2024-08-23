@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+  background-color: lightgrey;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.title {
+  margin: 20px 0;
+}
+
+.content {
+  width: 80%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.content.centered {
+  justify-content: center;
+}
+
+.content.spaced {
+  justify-content: space-around;
+}

@@ -1,0 +1,21 @@
+.input-type-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .input-type-label {
+    font-size: 12px;
+  }
+  .input-type-input {
+    margin-top: 4px;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    font-size: 14px;
+    padding: 14px 10px;
+  }
+  .input-type-toggle {
+    font-size: 14px;
+    font-weight: bolder;
+    cursor: pointer;
+  }
+  
