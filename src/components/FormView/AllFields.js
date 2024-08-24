@@ -7,7 +7,9 @@ import "./index.css";
 const AllFields = () => {
   const { formFields, isSaved } = useContext(FormContext);
 
-  const submitForm = () => {};
+  const submitForm = () => {
+    localStorage.setItem('formConfigData', JSON.stringify(formFields));
+  };
 
   if (formFields.length === 0) {
     return null;
@@ -25,7 +27,7 @@ const AllFields = () => {
         </div>
       ))}
       <input
-        onClick={submitForm}
+        onClick={()=> submitForm()}
         disabled={!isSaved}
         type="button"
         style={{
