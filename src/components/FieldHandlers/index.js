@@ -10,6 +10,7 @@ const FieldHandlers = ({ fieldId }) => {
 
   const insertField = () => {
     if (fieldConfig?.label === "") return;
+    if (fieldConfig?.placeholder === "" && fieldConfig?.subType !== "file") return;
 
     // const updatedFieldObj = {
     //   label,

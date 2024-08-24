@@ -4,8 +4,13 @@ import { FormContext } from "../../context/FormContext";
 
 const validateField = (field, value) => {
   let errorMessage = "";
-  if (field?.required && (!value || value.length===0)) {
+
+  if (field?.required && (!value || value.length === 0)) {
     errorMessage = "This field is required";
+  } else if (field?.minLength && value.length < field.minLength) {
+    errorMessage = `Minimum length is ${field.minLength}`;
+  } else if (field?.maxLength && value.length > field.maxLength) {
+    errorMessage = `Maximum length is ${field.maxLength}`;
   } else if (
     field.type === "input" &&
     field.subType === "email" &&
@@ -19,9 +24,29 @@ const validateField = (field, value) => {
   ) {
     errorMessage = "Please enter a valid number";
   }
+
   return {
-    valid: !errorMessage,
     error: errorMessage,
+    valid: !errorMessage,
+  };
+};
+
+const validateFile = (file) => {
+  const allowedTypes = ["image/jpeg", "image/png", "application/pdf"]; // File type to be accepted
+  const maxSize = 1 * 1024 * 1024; // Size of File max 1MB
+  let errorMessage = "";
+  if (!file) {
+    errorMessage = "No file selected";
+  }
+  if (!allowedTypes.includes(file.type)) {
+    errorMessage = "File type not supported";
+  }
+  if (file.size > maxSize) {
+    errorMessage = `File size exceeds ${maxSize / 1024 / 1024} MB`;
+  }
+  return {
+    error: errorMessage,
+    valid: !errorMessage,
   };
 };
 
@@ -30,13 +55,27 @@ const FieldInput = ({ field }) => {
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    const validation = validateField(field, value);
+    let value = e.target.value;
+    let validation = validateField(field, value);
+
+    if (field?.subType === "file") {
+      const file = e.target.files[0];
+      validation = validateFile(file);
+      value = file?.name;
+    }
+
     setError(validation?.error);
 
     setFormFields((prev) =>
       prev.map((item) =>
-        item.id === field.id ? { ...item, value, error: validation?.error, valid: validation?.valid } : item
+        item.id === field.id
+          ? {
+              ...item,
+              value,
+              error: validation?.error,
+              valid: validation?.valid,
+            }
+          : item
       )
     );
   };
@@ -44,18 +83,41 @@ const FieldInput = ({ field }) => {
   return (
     <div className="field-container">
       <label className="field-label">{field.label}</label>
-      <input
-        className="field-input"
-        type={field.subType}
-        value={formFields.find((item) => item.id === field.id)?.value || ""}
-        onChange={handleChange}
-        placeholder={field.placeholder}
-      />
+      {field?.subType === "file" ? (
+        <>
+          <input
+            className="field-input"
+            type={field.subType}
+            onChange={handleChange}
+            placeholder={field.placeholder}
+            accept={
+              field.subType === "file"
+                ? "image/jpeg,image/png,application/pdf"
+                : undefined
+            }
+          />
+          {field?.subType === "file" && (
+            <span style={{ fontSize: 14 }}>
+              Selected File:{" "}
+              {formFields.find((item) => item.id === field.id)?.value || ""}
+            </span>
+          )}
+        </>
+      ) : (
+        <input
+          maxLength={field?.maxLength}
+          minLength={field?.minLength}
+          className="field-input"
+          type={field.subType}
+          value={formFields.find((item) => item.id === field.id)?.value || ""}
+          onChange={handleChange}
+          placeholder={field.placeholder}
+        />
+      )}
       {error && <span className="error">{error}</span>}
     </div>
   );
 };
-
 
 const FieldTextarea = ({ field }) => {
   const { formFields, setFormFields } = useContext(FormContext);
@@ -68,26 +130,35 @@ const FieldTextarea = ({ field }) => {
 
     setFormFields((prev) =>
       prev.map((item) =>
-        item.id === field.id ? { ...item, value, error: validation?.error, valid: validation?.valid } : item
+        item.id === field.id
+          ? {
+              ...item,
+              value,
+              error: validation?.error,
+              valid: validation?.valid,
+            }
+          : item
       )
     );
   };
+  const value = formFields.find((item) => item.id === field.id)?.value
 
   return (
     <div className="field-container">
       <label className="field-label">{field.label}</label>
       <textarea
+        maxLength={field?.maxLength}
         className="field-textarea"
         rows={5}
         placeholder={field.placeholder}
-        value={formFields.find((item) => item.id === field.id)?.value || ""}
+        value={value || ""}
         onChange={handleChange}
       />
+      <span style={{fontSize: 12, marginTop: 2}}>{value?.length || 0}/{field?.maxLength}</span>
       {error && <span className="error">{error}</span>}
     </div>
   );
 };
-
 
 const FieldSelect = ({ field }) => {
   const { formFields, setFormFields } = useContext(FormContext);
@@ -99,14 +170,21 @@ const FieldSelect = ({ field }) => {
 
     setFormFields((prev) =>
       prev.map((item) =>
-        item.id === field.id ? { ...item, value, error: validation?.error , valid: validation?.valid } : item
+        item.id === field.id
+          ? {
+              ...item,
+              value,
+              error: validation?.error,
+              valid: validation?.valid,
+            }
+          : item
       )
     );
   };
 
-  useEffect(()=> {
-    handleChange(field?.subTypeOptions[0]?.value)
-  }, [field?.subTypeOptions])
+  useEffect(() => {
+    handleChange(field?.subTypeOptions[0]?.value);
+  }, [field?.subTypeOptions]);
 
   return (
     <div className="field-container">
@@ -132,7 +210,8 @@ const FieldCheckbox = ({ field }) => {
   const [error, setError] = useState("");
 
   const handleChange = (optionValue, isChecked) => {
-    const updatedValues = formFields.find((item) => item.id === field.id)?.value || [];
+    const updatedValues =
+      formFields.find((item) => item.id === field.id)?.value || [];
 
     const newValues = isChecked
       ? [...updatedValues, optionValue]
@@ -143,7 +222,14 @@ const FieldCheckbox = ({ field }) => {
 
     setFormFields((prev) =>
       prev.map((item) =>
-        item.id === field.id ? { ...item, value: newValues, error: validation?.error, valid: validation?.valid } : item
+        item.id === field.id
+          ? {
+              ...item,
+              value: newValues,
+              error: validation?.error,
+              valid: validation?.valid,
+            }
+          : item
       )
     );
   };
@@ -159,9 +245,9 @@ const FieldCheckbox = ({ field }) => {
               className="field-option-input"
               id={option.id}
               value={option.value}
-              checked={
-                formFields.find((item) => item.id === field.id)?.value?.includes(option.value)
-              }
+              checked={formFields
+                .find((item) => item.id === field.id)
+                ?.value?.includes(option.value)}
               onChange={(e) => handleChange(option.value, e.target.checked)}
             />
             <label className="field-option-label">{option.value}</label>
@@ -172,7 +258,6 @@ const FieldCheckbox = ({ field }) => {
     </div>
   );
 };
-
 
 const FieldRadio = ({ field }) => {
   const { formFields, setFormFields } = useContext(FormContext);
@@ -185,7 +270,12 @@ const FieldRadio = ({ field }) => {
     setFormFields((prev) =>
       prev.map((item) =>
         item.id === field.id
-          ? { ...item, value: optionValue, error: validation.error, valid: validation.valid }
+          ? {
+              ...item,
+              value: optionValue,
+              error: validation.error,
+              valid: validation.valid,
+            }
           : item
       )
     );

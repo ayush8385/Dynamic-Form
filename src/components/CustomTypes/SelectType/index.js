@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { FieldConfigContext } from "../../../context/FieldConfigContext";
 import "./index.css";
 
-const SelectType = () => {
+const SelectType = ({field}) => {
   const { fieldConfig, setFieldConfig } = useContext(FieldConfigContext);
   const [optionValue, setOptionValue] = useState("");
   const [showEditOptions, setShowEditOptions] = useState(false);

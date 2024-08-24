@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { FieldConfigContext } from "../../../context/FieldConfigContext";
 import "./index.css";
 
-const InputType = () => {
+const InputType = ({field}) => {
   const { fieldConfig, setFieldConfig } = useContext(FieldConfigContext);
   const [showMore, setShowMore] = useState(false);
   const [errors, setErrors] = useState({
@@ -35,6 +35,7 @@ const InputType = () => {
               onChange={(e) =>
                 setFieldConfig((prev) => ({
                   ...prev,
+                  ...field,
                   required: e.target.checked,
                 }))
               }
@@ -49,7 +50,7 @@ const InputType = () => {
           type="text"
           value={fieldConfig?.label || ""}
           onChange={(e) => {
-            setFieldConfig((prev) => ({ ...prev, label: e.target.value }));
+            setFieldConfig((prev) => ({ ...prev,...field, label: e.target.value }));
             validate(e.target.value, "label");
           }}
           required
@@ -57,29 +58,34 @@ const InputType = () => {
         />
         {errors.label && <span className="error">{errors.label}</span>}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", marginTop: 16 }}>
-        <label className="input-type-label">Placeholder</label>
-        <input
-          className="input-type-input"
-          type="text"
-          value={fieldConfig?.placeholder || ""}
-          onChange={(e) => {
-            setFieldConfig((prev) => ({
-              ...prev,
-              placeholder: e.target.value,
-            }));
-            validate(e.target.value, "placeholder");
-          }}
-          placeholder="Add Field Placeholder"
-        />
-        {errors.placeholder && (
-          <span className="error">{errors.placeholder}</span>
-        )}
-      </div>
+      {field?.subType !== "file" && (
+        <div
+          style={{ display: "flex", flexDirection: "column", marginTop: 16 }}
+        >
+          <label className="input-type-label">Placeholder</label>
+          <input
+            className="input-type-input"
+            type="text"
+            value={fieldConfig?.placeholder || ""}
+            onChange={(e) => {
+              setFieldConfig((prev) => ({
+                ...prev,
+                ...field,
+                placeholder: e.target.value,
+              }));
+              validate(e.target.value, "placeholder");
+            }}
+            placeholder="Add Field Placeholder"
+          />
+          {errors.placeholder && (
+            <span className="error">{errors.placeholder}</span>
+          )}
+        </div>
+      )}
       <p onClick={() => setShowMore(!showMore)} className="input-type-toggle">
         {showMore ? "Hide Options" : "Show Options"}
       </p>
-      {/* {showMore && (
+      {showMore && (
         <div>
           <div
             style={{ display: "flex", flexDirection: "column", marginTop: 16 }}
@@ -87,9 +93,16 @@ const InputType = () => {
             <label className="input-type-label">Max</label>
             <input
               className="input-type-input"
-              type="text"
-              value={placeholder}
-              onChange={(e) => setPlaceholderValue(e.target.value)}
+              type="number"
+              value={fieldConfig?.maxLength}
+              onChange={(e) => {
+                setFieldConfig((prev) => ({
+                  ...prev,
+                  ...field,
+                  maxLength: e.target.value,
+                }));
+                validate(e.target.value, "min length");
+              }}
               placeholder="Set Maximum Length"
             />
           </div>
@@ -99,14 +112,21 @@ const InputType = () => {
             <label className="input-type-label">Min</label>
             <input
               className="input-type-input"
-              type="text"
-              value={placeholder}
-              onChange={(e) => setPlaceholderValue(e.target.value)}
+              type="number"
+              value={fieldConfig?.minLength}
+              onChange={(e) => {
+                setFieldConfig((prev) => ({
+                  ...prev,
+                  ...field,
+                  minLength: e.target.value,
+                }));
+                validate(e.target.value, "max length");
+              }}
               placeholder="Set Minimum Length"
             />
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

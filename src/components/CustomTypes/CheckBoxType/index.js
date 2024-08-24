@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { FieldConfigContext } from "../../../context/FieldConfigContext";
 import "./index.css";
 
-const CheckBoxType = ({ type }) => {
+const CheckBoxType = ({ field }) => {
   const { fieldConfig, setFieldConfig } = useContext(FieldConfigContext);
   const [optionValue, setOptionValue] = useState("");
   const [editOptionId, setEditOptionId] = useState(null);
@@ -98,7 +98,7 @@ const CheckBoxType = ({ type }) => {
             <div key={option?.id} className="checkbox-type-option-item">
               <input
                 disabled
-                type={type}
+                type={field?.type}
                 className="checkbox-type-disabled-input"
                 id={option?.id}
                 value={option?.value}
