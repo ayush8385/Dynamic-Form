@@ -10,37 +10,13 @@ const FieldHandlers = ({ fieldId }) => {
 
   const insertField = () => {
     if (fieldConfig?.label === "") return;
-    if (fieldConfig?.placeholder === "" && fieldConfig?.subType !== "file") return;
+    if(fieldConfig?.type === "input" && fieldConfig?.subType !== 'file' && fieldConfig?.placeholder === "") return;
 
-    // const updatedFieldObj = {
-    //   label,
-    //   placeholder,
-    //   isSaved: true,
-    // };
-    // const isInputFieldValid =
-    //   fieldType === "input" &&
-    //   (subFieldType === "file" || (subFieldType !== "" && placeholder !== ""));
+    const isSelectableFieldValid =
+      ["select", "checkbox", "radio"].includes(fieldConfig?.type) &&
+      fieldConfig?.subTypeOptions.length > 0;
 
-    // const isSelectableFieldValid =
-    //   ["dropdown", "checkbox", "radio"].includes(fieldType) &&
-    //   subFieldOptions.length > 0;
-
-    // if (isInputFieldValid || isSelectableFieldValid) {
-    //   setFormFields((prev) => [...prev, updatedFieldObj]);
-    //   setIsSaved(true);
-    //   clearStates();
-    // }
-    // setFormFields((prev) =>
-    //   prev.map((field) =>
-    //     field.id === fieldId
-    //       ? {
-    //           ...field,
-    //           fieldConfig: { ...field.fieldConfig, ...fieldConfig },
-    //           isSaved: true,
-    //         }
-    //       : field
-    //   )
-    // );
+    if(!isSelectableFieldValid) return;
 
     setFormFields((prev) =>
       prev.map((field) =>
