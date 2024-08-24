@@ -12,6 +12,7 @@ const CheckBoxType = ({ field }) => {
     if (optionValue) {
       setFieldConfig((prev) => ({
         ...prev,
+        ...field,
         subTypeOptions: [
           ...prev?.subTypeOptions,
           {
@@ -30,6 +31,7 @@ const CheckBoxType = ({ field }) => {
   const deleteOption = (id) => {
     setFieldConfig((prev) => ({
       ...prev,
+      ...field,
       subTypeOptions: prev?.subTypeOptions.filter((opt) => opt.id !== id),
     }));
   };
@@ -37,6 +39,7 @@ const CheckBoxType = ({ field }) => {
   const editOption = () => {
     setFieldConfig((prev) => ({
       ...prev,
+      ...field,
       subTypeOptions: prev?.subTypeOptions.map((opt) =>
         opt.id === editOptionId ? { ...opt, value: editOptionValue } : opt
       ),
@@ -71,6 +74,7 @@ const CheckBoxType = ({ field }) => {
               onChange={(e) =>
                 setFieldConfig((prev) => ({
                   ...prev,
+                  ...field,
                   required: e.target.checked,
                 }))
               }
@@ -85,7 +89,7 @@ const CheckBoxType = ({ field }) => {
           type="text"
           value={fieldConfig?.label || ""}
           onChange={(e) =>
-            setFieldConfig((prev) => ({ ...prev, label: e.target.value }))
+            setFieldConfig((prev) => ({ ...prev,...field, label: e.target.value }))
           }
           placeholder="Add Field Label"
         />

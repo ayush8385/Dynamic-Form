@@ -154,7 +154,7 @@ const FieldTextarea = ({ field }) => {
         value={value || ""}
         onChange={handleChange}
       />
-      <span style={{fontSize: 12, marginTop: 2}}>{value?.length || 0}/{field?.maxLength}</span>
+      <span style={{fontSize: 12, marginTop: 2}}>{value?.length || 0}/{field?.maxLength || 1000000}</span>
       {error && <span className="error">{error}</span>}
     </div>
   );
