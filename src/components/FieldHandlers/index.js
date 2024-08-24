@@ -12,11 +12,9 @@ const FieldHandlers = ({ fieldId }) => {
     if (fieldConfig?.label === "") return;
     if(fieldConfig?.type === "input" && fieldConfig?.subType !== 'file' && fieldConfig?.placeholder === "") return;
 
-    const isSelectableFieldValid =
-      ["select", "checkbox", "radio"].includes(fieldConfig?.type) &&
-      fieldConfig?.subTypeOptions.length > 0;
+    const isSelectableField = ["select", "checkbox", "radio"].includes(fieldConfig?.type)
 
-    if(!isSelectableFieldValid) return;
+    if(isSelectableField &&  fieldConfig?.subTypeOptions.length === 0) return;
 
     setFormFields((prev) =>
       prev.map((field) =>
