@@ -6,11 +6,7 @@ import "./index.css";
 
 const AllFields = () => {
   const { formFields, isSaved } = useContext(FormContext);
-
-  const submitForm = () => {
-    localStorage.setItem('formConfigData', JSON.stringify(formFields));
-  };
-
+  const isFormValid = formFields.every(field => field.valid);
   if (formFields.length === 0) {
     return null;
   }
@@ -27,9 +23,8 @@ const AllFields = () => {
         </div>
       ))}
       <input
-        onClick={()=> submitForm()}
-        disabled={!isSaved}
-        type="button"
+        disabled={!isSaved || !isFormValid}
+        type="submit"
         style={{
           width: "40%",
           padding: "12px 20px",

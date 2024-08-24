@@ -5,6 +5,7 @@ export const initialFieldConfig = {
   label: "",
   placeholder: "",
   subTypeOptions: [],
+  required: true,
 };
 const FieldConfigContextProvider = ({ children }) => {
   const [fieldConfig, setFieldConfig] = useState(initialFieldConfig);

@@ -57,7 +57,29 @@ const CheckBoxType = ({ type }) => {
   return (
     <div className="checkbox-type-container">
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <label className="checkbox-type-label">Label</label>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <label className="input-type-label">Label</label>
+          <label style={{ display: "flex", alignItems: "center" }}>
+            <input
+              onChange={(e) =>
+                setFieldConfig((prev) => ({
+                  ...prev,
+                  required: e.target.checked,
+                }))
+              }
+              checked={fieldConfig?.required}
+              type="checkbox"
+            />
+            <label className="input-type-label">Mark as Required</label>
+          </label>
+        </div>
         <input
           className="checkbox-type-input"
           type="text"

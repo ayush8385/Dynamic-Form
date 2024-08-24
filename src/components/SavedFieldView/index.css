@@ -46,3 +46,10 @@
     outline: none;
   }
   
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+    margin-left: 4px;
+    font-weight: bold;
+  }

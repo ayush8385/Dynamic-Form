@@ -58,7 +58,29 @@ const SelectType = () => {
   return (
     <div className="select-type-container">
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <label className="select-type-label">Label</label>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <label className="input-type-label">Label</label>
+          <label style={{ display: "flex", alignItems: "center" }}>
+            <input
+              onChange={(e) =>
+                setFieldConfig((prev) => ({
+                  ...prev,
+                  required: e.target.checked,
+                }))
+              }
+              checked={fieldConfig?.required}
+              type="checkbox"
+            />
+            <label className="input-type-label">Mark as Required</label>
+          </label>
+        </div>
         <input
           className="select-type-input"
           type="text"
@@ -73,7 +95,7 @@ const SelectType = () => {
       <div style={{ display: "flex", flexDirection: "column", marginTop: 20 }}>
         <label className="select-type-label">Options</label>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <select className="select-type-select" style={{flex:1}}>
+          <select className="select-type-select" style={{ flex: 1 }}>
             {fieldConfig?.subTypeOptions?.map((option) => (
               <option key={option.id}>{option.value}</option>
             ))}

@@ -18,4 +18,6 @@
     font-weight: bolder;
     cursor: pointer;
   }
-  
+  .error {
+    text-transform: capitalize;
+  }
