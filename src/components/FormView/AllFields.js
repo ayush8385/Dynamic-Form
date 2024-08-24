@@ -4,9 +4,15 @@ import SavedFieldView from "../SavedFieldView";
 import EditFieldView from "../EditFieldView";
 import "./index.css";
 
-const AllFields = () => {
-  const { formFields, isSaved } = useContext(FormContext);
-  const isFormValid = formFields.every(field => field.valid);
+const AllFields = ({ isSubmitted }) => {
+  const { formFields, isSaved, setFormFields } = useContext(FormContext);
+  const isFormValid = formFields.every((field) => field.valid);
+
+  const newForm = () => {
+    localStorage.removeItem("formConfigData");
+    setFormFields([]);
+  };
+
   if (formFields.length === 0) {
     return null;
   }
@@ -32,9 +38,27 @@ const AllFields = () => {
           borderRadius: 12,
           fontWeight: "bolder",
           fontSize: 16,
+          backgroundColor: isSubmitted ? "green" : "white",
+          color: isSubmitted ? "white" : "black",
         }}
-        value="Submit"
+        value={isSubmitted ? "Submitted" : "Submit"}
       />
+      {isSubmitted && (
+        <input
+          onClick={newForm}
+          style={{
+            width: "30%",
+            textAlign: "center",
+            padding: "12px 20px",
+            outline: "none",
+            borderRadius: 12,
+            fontWeight: "bolder",
+            fontSize: 16,
+            marginTop: 20,
+          }}
+          value="New Form"
+        />
+      )}
     </div>
   );
 };
