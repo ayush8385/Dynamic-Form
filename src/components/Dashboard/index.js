@@ -16,6 +16,7 @@ const Dashboard = () => {
     if (savedForms) {
       setAllForms(JSON.parse(savedForms));
     }
+    setRefetchForms(false)
   }, [refetchForms]);
 
   const deleteForm = (formId) => {

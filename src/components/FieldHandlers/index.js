@@ -22,7 +22,7 @@ const FieldHandlers = ({ field }) => {
 
     setFormConfig((prev) =>
       prev.map((item) =>
-        item?.id === field?.id ? { ...item, ...field, isSaved: true } : item
+        item?.id === field?.id ? { ...item, ...field, isSaved: true, valid: field?.required ? false: true } : item
       )
     );
     // clearStates();

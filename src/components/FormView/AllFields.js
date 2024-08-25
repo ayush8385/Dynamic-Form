@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import "./index.css";
 import RenderForm from "../RenderForm";
 import { FormConfigContext } from "../../context/FormConfigContext";
@@ -9,6 +9,7 @@ const AllFields = () => {
   const isFormValid = formConfig.every((field) => field.valid);
   const isAllSaved = formConfig.every((field) => field.isSaved);
   const navigate = useNavigate();
+  console.log(formConfig)
 
   const submitForm = () => {
     if (isFormValid && isAllSaved) {
