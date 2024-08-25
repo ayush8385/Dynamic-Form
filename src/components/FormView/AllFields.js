@@ -34,11 +34,6 @@ const AllFields = () => {
     }
   };
 
-  const newForm = () => {
-    // localStorage.removeItem("formConfigData");
-    // setFormFields([]);
-  };
-
   if (formConfig?.length === 0) {
     return null;
   }
