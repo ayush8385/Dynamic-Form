@@ -1,43 +1,56 @@
 .configure-view {
-    display: flex;
-    box-shadow: 4px 4px 5px black;
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    flex-direction: column;
-    max-height: 70vh;
-    max-width: 30%;
-    overflow: scroll;
-    scrollbar-width: none;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  top: 0;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+}
+.configure-container {
+  width: 30%;
+  overflow: scroll;
+  scrollbar-width: none;
+  background-color: white;
+  box-shadow: 4px 4px 5px black;
+  border-radius: 10px;
+  flex-direction: column;
+  max-height: 70vh;
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    width: 80%;
+    margin: 0px;
   }
-  
-  .configure-view-section {
-    margin-top: 10px;
-  }
-  
-  .configure-view-section-title {
-    margin: 0;
-  }
-  
-  .configure-view-children-container {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .configure-view-child {
-    cursor: pointer;
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.2);
-    margin: 10px;
-    border-radius: 10px;
-  }
-  
-  .configure-view-child-text {
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
+}
+
+.configure-view-section {
+  margin-top: 10px;
+}
+
+.configure-view-section-title {
+  margin: 0;
+}
+
+.configure-view-children-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.configure-view-child {
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.configure-view-child-text {
+  font-size: 16px;
+  font-weight: bold;
+}

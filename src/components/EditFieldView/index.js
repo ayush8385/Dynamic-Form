@@ -1,4 +1,3 @@
-import FieldConfigContextProvider from "../../context/FieldConfigContextProvider";
 import CheckBoxType from "../CustomTypes/CheckBoxType";
 import InputType from "../CustomTypes/InputType";
 import SelectType from "../CustomTypes/SelectType";
@@ -21,10 +20,10 @@ const EditFieldView = ({ field }) => {
   };
 
   return (
-    <FieldConfigContextProvider>
+    <>
         {renderField()}
-        <FieldHandlers fieldId={field?.id} />
-    </FieldConfigContextProvider>
+        <FieldHandlers field={field} />
+    </>
   );
 };
 export default EditFieldView;

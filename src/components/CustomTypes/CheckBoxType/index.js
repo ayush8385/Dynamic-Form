@@ -1,49 +1,51 @@
 import { useContext, useState } from "react";
-import { FieldConfigContext } from "../../../context/FieldConfigContext";
 import "./index.css";
+import { FormConfigContext } from "../../../context/FormConfigContext";
 
 const CheckBoxType = ({ field }) => {
-  const { fieldConfig, setFieldConfig } = useContext(FieldConfigContext);
+  const { setFormConfig } = useContext(FormConfigContext);
   const [optionValue, setOptionValue] = useState("");
   const [editOptionId, setEditOptionId] = useState(null);
   const [editOptionValue, setEditOptionValue] = useState("");
 
+  const updateFieldInFormConfig = (updatedField) => {
+    setFormConfig((prev) =>
+      prev.map((item) =>
+        item.id === field.id ? { ...item, ...updatedField } : item
+      )
+    );
+  };
+
   const saveOption = () => {
     if (optionValue) {
-      setFieldConfig((prev) => ({
-        ...prev,
-        ...field,
+      updateFieldInFormConfig({
         subTypeOptions: [
-          ...prev?.subTypeOptions,
+          ...(field?.subTypeOptions || []),
           {
             id:
-              prev?.subTypeOptions?.length > 0
-                ? prev?.subTypeOptions[prev?.subTypeOptions.length - 1].id + 1
+              field?.subTypeOptions?.length > 0
+                ? field.subTypeOptions[field.subTypeOptions.length - 1].id + 1
                 : 0,
             value: optionValue,
           },
         ],
-      }));
+      });
       setOptionValue("");
     }
   };
 
   const deleteOption = (id) => {
-    setFieldConfig((prev) => ({
-      ...prev,
-      ...field,
-      subTypeOptions: prev?.subTypeOptions.filter((opt) => opt.id !== id),
-    }));
+    updateFieldInFormConfig({
+      subTypeOptions: field?.subTypeOptions.filter((opt) => opt.id !== id),
+    });
   };
 
   const editOption = () => {
-    setFieldConfig((prev) => ({
-      ...prev,
-      ...field,
-      subTypeOptions: prev?.subTypeOptions.map((opt) =>
+    updateFieldInFormConfig({
+      subTypeOptions: field?.subTypeOptions.map((opt) =>
         opt.id === editOptionId ? { ...opt, value: editOptionValue } : opt
       ),
-    }));
+    });
     setEditOptionId(null);
     setEditOptionValue("");
   };
@@ -72,13 +74,11 @@ const CheckBoxType = ({ field }) => {
           <label style={{ display: "flex", alignItems: "center" }}>
             <input
               onChange={(e) =>
-                setFieldConfig((prev) => ({
-                  ...prev,
-                  ...field,
+                updateFieldInFormConfig({
                   required: e.target.checked,
-                }))
+                })
               }
-              checked={fieldConfig?.required}
+              checked={field?.required}
               type="checkbox"
             />
             <label className="input-type-label">Mark as Required</label>
@@ -87,9 +87,11 @@ const CheckBoxType = ({ field }) => {
         <input
           className="checkbox-type-input"
           type="text"
-          value={fieldConfig?.label || ""}
+          value={field?.label || ""}
           onChange={(e) =>
-            setFieldConfig((prev) => ({ ...prev,...field, label: e.target.value }))
+            updateFieldInFormConfig({
+              label: e.target.value,
+            })
           }
           placeholder="Add Field Label"
         />
@@ -98,7 +100,7 @@ const CheckBoxType = ({ field }) => {
       <div className="checkbox-type-options-container">
         <label className="checkbox-type-label">Options</label>
         <div className="checkbox-type-options-list">
-          {fieldConfig?.subTypeOptions?.map((option) => (
+          {field?.subTypeOptions?.map((option) => (
             <div key={option?.id} className="checkbox-type-option-item">
               <input
                 disabled

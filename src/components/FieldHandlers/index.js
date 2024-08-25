@@ -1,41 +1,44 @@
 import { useContext } from "react";
-import { FieldConfigContext } from "../../context/FieldConfigContext";
-import { FormContext } from "../../context/FormContext";
-import { initialFieldConfig } from "../../context/FieldConfigContextProvider";
 import "./index.css";
+import { FormConfigContext } from "../../context/FormConfigContext";
 
-const FieldHandlers = ({ fieldId }) => {
-  const { fieldConfig, setFieldConfig } = useContext(FieldConfigContext);
-  const { setFormFields, setIsSaved } = useContext(FormContext);
+const FieldHandlers = ({ field }) => {
+  const { setFormConfig } = useContext(FormConfigContext);
 
   const insertField = () => {
-    if (fieldConfig?.label === "") return;
-    if(fieldConfig?.type === "input" && fieldConfig?.subType !== 'file' && fieldConfig?.placeholder === "") return;
+    if (field?.label === "") return;
+    if (
+      field?.type === "input" &&
+      field?.subType !== "file" &&
+      field?.placeholder === ""
+    )
+      return;
 
-    const isSelectableField = ["select", "checkbox", "radio"].includes(fieldConfig?.type)
+    const isSelectableField = ["select", "checkbox", "radio"].includes(
+      field?.type
+    );
 
-    if(isSelectableField &&  fieldConfig?.subTypeOptions.length === 0) return;
+    if (isSelectableField && field?.subTypeOptions.length === 0) return;
 
-    setFormFields((prev) =>
-      prev.map((field) =>
-        field?.id === fieldId
-          ? { ...field, ...fieldConfig, isSaved: true }
-          : field
+    setFormConfig((prev) =>
+      prev.map((item) =>
+        item?.id === field?.id ? { ...item, ...field, isSaved: true } : item
       )
     );
-    setIsSaved(true);
-    clearStates();
+    // clearStates();
   };
 
   const removeField = () => {
-    setFormFields((prev) => prev.filter((field) => field.id !== fieldId));
-    setIsSaved(true);
-    clearStates();
+    setFormConfig((prev) => prev.filter((item) => item.id !== field.id));
+    // clearStates();
   };
 
-  const clearStates = () => {
-    setFieldConfig(initialFieldConfig);
-  };
+  // const clearStates = () => {
+  //   console.log('remove', formConfig, field?.id)
+  //   setFormConfig((prev) =>
+  //     prev.map((item) => (item.id === field.id ?  : item))
+  //   );
+  // };
 
   return (
     <div className="field-handlers-container">
@@ -45,12 +48,12 @@ const FieldHandlers = ({ fieldId }) => {
         className="field-handler-button delete"
         value="Delete"
       />
-      <input
+      {/* <input
         onClick={clearStates}
         type="button"
         className="field-handler-button reset"
         value="Reset"
-      />
+      /> */}
       <input
         onClick={insertField}
         type="button"

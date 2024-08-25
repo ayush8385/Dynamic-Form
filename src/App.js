@@ -1,11 +1,11 @@
-import Home from "./components/Home";
-import FormContextProvider from "./context/FormContextProvider";
+import RootNavigator from "./components/RootNavigator";
 
 function App() {
   return (
-    <FormContextProvider>
-      <Home/>
-    </FormContextProvider>
+    <div className="container">
+      <h1 className="title">Dynamic Form Builder</h1>
+      <RootNavigator />
+    </div>
   );
 }
 

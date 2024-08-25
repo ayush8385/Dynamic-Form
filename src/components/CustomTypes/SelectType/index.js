@@ -1,50 +1,50 @@
 import { useContext, useState } from "react";
-import { FieldConfigContext } from "../../../context/FieldConfigContext";
 import "./index.css";
+import { FormConfigContext } from "../../../context/FormConfigContext";
 
-const SelectType = ({field}) => {
-  const { fieldConfig, setFieldConfig } = useContext(FieldConfigContext);
+const SelectType = ({ field }) => {
+  const { setFormConfig } = useContext(FormConfigContext);
   const [optionValue, setOptionValue] = useState("");
   const [showEditOptions, setShowEditOptions] = useState(false);
   const [editOptionId, setEditOptionId] = useState(null);
   const [editOptionValue, setEditOptionValue] = useState("");
 
+  const updateFieldInFormConfig = (updatedField) => {
+    setFormConfig((prev) =>
+      prev.map((item) => (item.id === field.id ? { ...item, ...updatedField } : item))
+    );
+  };
+
   const saveOption = () => {
     if (optionValue) {
-      setFieldConfig((prev) => ({
-        ...prev,
-        ...field,
+      updateFieldInFormConfig({
         subTypeOptions: [
-          ...prev?.subTypeOptions,
+          ...(field?.subTypeOptions || []),
           {
             id:
-              prev?.subTypeOptions?.length > 0
-                ? prev?.subTypeOptions[prev?.subTypeOptions.length - 1].id + 1
+              field?.subTypeOptions?.length > 0
+                ? field.subTypeOptions[field.subTypeOptions.length - 1].id + 1
                 : 0,
             value: optionValue,
           },
         ],
-      }));
+      });
       setOptionValue("");
     }
   };
 
   const deleteOption = (id) => {
-    setFieldConfig((prev) => ({
-      ...prev,
-      ...field,
-      subTypeOptions: prev?.subTypeOptions.filter((opt) => opt.id !== id),
-    }));
+    updateFieldInFormConfig({
+      subTypeOptions: field?.subTypeOptions.filter((opt) => opt.id !== id),
+    });
   };
 
   const editOption = () => {
-    setFieldConfig((prev) => ({
-      ...prev,
-      ...field,
-      subTypeOptions: prev?.subTypeOptions.map((opt) =>
+    updateFieldInFormConfig({
+      subTypeOptions: field?.subTypeOptions.map((opt) =>
         opt.id === editOptionId ? { ...opt, value: editOptionValue } : opt
       ),
-    }));
+    });
     setEditOptionId(null);
     setEditOptionValue("");
   };
@@ -73,13 +73,9 @@ const SelectType = ({field}) => {
           <label style={{ display: "flex", alignItems: "center" }}>
             <input
               onChange={(e) =>
-                setFieldConfig((prev) => ({
-                  ...prev,
-                  ...field,
-                  required: e.target.checked,
-                }))
+                updateFieldInFormConfig({ required: e.target.checked })
               }
-              checked={fieldConfig?.required}
+              checked={field?.required}
               type="checkbox"
             />
             <label className="input-type-label">Mark as Required</label>
@@ -88,9 +84,9 @@ const SelectType = ({field}) => {
         <input
           className="select-type-input"
           type="text"
-          value={fieldConfig?.label || ""}
+          value={field?.label || ""}
           onChange={(e) =>
-            setFieldConfig((prev) => ({ ...prev,...field, label: e.target.value }))
+            updateFieldInFormConfig({ label: e.target.value })
           }
           placeholder="Add Field Label"
         />
@@ -100,7 +96,7 @@ const SelectType = ({field}) => {
         <label className="select-type-label">Options</label>
         <div style={{ display: "flex", alignItems: "center" }}>
           <select className="select-type-select" style={{ flex: 1 }}>
-            {fieldConfig?.subTypeOptions?.map((option) => (
+            {field?.subTypeOptions?.map((option) => (
               <option key={option.id}>{option.value}</option>
             ))}
           </select>
@@ -115,7 +111,7 @@ const SelectType = ({field}) => {
 
       {showEditOptions && (
         <div className="select-type-edit-options">
-          {fieldConfig?.subTypeOptions?.map((option) => (
+          {field?.subTypeOptions?.map((option) => (
             <div key={option.id}>
               <input
                 className="select-type-edit-input"

@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { FieldConfigContext } from "../../../context/FieldConfigContext";
 import "./index.css";
+import { FormConfigContext } from "../../../context/FormConfigContext";
 
-const InputType = ({field}) => {
-  const { fieldConfig, setFieldConfig } = useContext(FieldConfigContext);
+const InputType = ({ field }) => {
+  const { setFormConfig } = useContext(FormConfigContext);
   const [showMore, setShowMore] = useState(false);
   const [errors, setErrors] = useState({
     label: "",
@@ -16,6 +16,12 @@ const InputType = ({field}) => {
     } else {
       setErrors((prev) => ({ ...prev, [type]: "" }));
     }
+  };
+
+  const updateFieldInFormConfig = (updatedField) => {
+    setFormConfig((prev) =>
+      prev.map((item) => (item.id === field.id ? { ...item, ...updatedField } : item))
+    );
   };
 
   return (
@@ -33,13 +39,9 @@ const InputType = ({field}) => {
           <label style={{ display: "flex", alignItems: "center" }}>
             <input
               onChange={(e) =>
-                setFieldConfig((prev) => ({
-                  ...prev,
-                  ...field,
-                  required: e.target.checked,
-                }))
+                updateFieldInFormConfig({ required: e.target.checked })
               }
-              checked={fieldConfig?.required}
+              checked={field?.required}
               type="checkbox"
             />
             <label className="input-type-label">Mark as Required</label>
@@ -48,9 +50,9 @@ const InputType = ({field}) => {
         <input
           className="input-type-input"
           type="text"
-          value={fieldConfig?.label || ""}
+          value={field?.label || ""}
           onChange={(e) => {
-            setFieldConfig((prev) => ({ ...prev,...field, label: e.target.value }));
+            updateFieldInFormConfig({ label: e.target.value });
             validate(e.target.value, "label");
           }}
           required
@@ -66,13 +68,9 @@ const InputType = ({field}) => {
           <input
             className="input-type-input"
             type="text"
-            value={fieldConfig?.placeholder || ""}
+            value={field?.placeholder || ""}
             onChange={(e) => {
-              setFieldConfig((prev) => ({
-                ...prev,
-                ...field,
-                placeholder: e.target.value,
-              }));
+              updateFieldInFormConfig({ placeholder: e.target.value });
               validate(e.target.value, "placeholder");
             }}
             placeholder="Add Field Placeholder"
@@ -94,14 +92,10 @@ const InputType = ({field}) => {
             <input
               className="input-type-input"
               type="number"
-              value={fieldConfig?.maxLength}
+              value={field?.maxLength || ""}
               onChange={(e) => {
-                setFieldConfig((prev) => ({
-                  ...prev,
-                  ...field,
-                  maxLength: e.target.value,
-                }));
-                validate(e.target.value, "min length");
+                updateFieldInFormConfig({ maxLength: e.target.value });
+                validate(e.target.value, "max length");
               }}
               placeholder="Set Maximum Length"
             />
@@ -113,14 +107,10 @@ const InputType = ({field}) => {
             <input
               className="input-type-input"
               type="number"
-              value={fieldConfig?.minLength}
+              value={field?.minLength || ""}
               onChange={(e) => {
-                setFieldConfig((prev) => ({
-                  ...prev,
-                  ...field,
-                  minLength: e.target.value,
-                }));
-                validate(e.target.value, "max length");
+                updateFieldInFormConfig({ minLength: e.target.value });
+                validate(e.target.value, "min length");
               }}
               placeholder="Set Minimum Length"
             />

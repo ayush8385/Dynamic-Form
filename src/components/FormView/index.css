@@ -8,6 +8,12 @@
   box-shadow: 1px 2px 10px 0px black;
   background-color: white;
   padding: 20px;
+  margin: 20px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 0px;
+  }
 }
 
 /* Styles for the AddField container */
@@ -49,5 +55,8 @@
   width: 100%;
   border-radius: 20px;
   margin-top: 10px;
+  box-sizing: border-box;
+}
+.form-container{
   box-sizing: border-box;
 }

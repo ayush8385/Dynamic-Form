@@ -3,7 +3,8 @@ import { FormContext } from "../../context/FormContext";
 import './index.css';
 
 const AddField = ({ showFieldConfig }) => {
-  const { isSaved } = useContext(FormContext);
+  // const { isSaved } = useContext(FormContext);
+  const isSaved = true;
 
   return (
     <div

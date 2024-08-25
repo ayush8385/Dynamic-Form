@@ -1,36 +1,55 @@
-import { useContext } from "react";
-import { FormContext } from "../../context/FormContext";
-import SavedFieldView from "../SavedFieldView";
-import EditFieldView from "../EditFieldView";
+import { useContext, useState } from "react";
 import "./index.css";
+import RenderForm from "../RenderForm";
+import { FormConfigContext } from "../../context/FormConfigContext";
+import { useNavigate } from "react-router-dom";
 
-const AllFields = ({ isSubmitted }) => {
-  const { formFields, isSaved, setFormFields } = useContext(FormContext);
-  const isFormValid = formFields.every((field) => field.valid);
+const AllFields = () => {
+  const { formId, formConfig } = useContext(FormConfigContext);
+  const isFormValid = formConfig.every((field) => field.valid);
+  const isAllSaved = formConfig.every((field) => field.isSaved);
+  const navigate = useNavigate();
 
-  const newForm = () => {
-    localStorage.removeItem("formConfigData");
-    setFormFields([]);
+  const submitForm = () => {
+    if (isFormValid && isAllSaved) {
+      const allForms = localStorage.getItem("formConfigData");
+      const parsedForm = JSON.parse(allForms) || [];
+
+      const existingFormIndex = parsedForm.findIndex(
+        (form) => form.id === formId
+      );
+      if (existingFormIndex !== -1) {
+        parsedForm[existingFormIndex].formConfig = formConfig;
+      } else {
+        parsedForm.push({ id: formId, formConfig });
+      }
+      
+      localStorage.setItem("formConfigData", JSON.stringify(parsedForm));
+      navigate("/");
+    } else {
+      formConfig.map((field) =>
+        !field.valid ? { ...field, error: "This is Required" } : field
+      );
+      console.log("Form validation failed");
+    }
   };
 
-  if (formFields.length === 0) {
+  const newForm = () => {
+    // localStorage.removeItem("formConfigData");
+    // setFormFields([]);
+  };
+
+  if (formConfig?.length === 0) {
     return null;
   }
 
   return (
     <div className="fields-container">
-      {formFields.map(({ id, isSaved, ...fieldProps }) => (
-        <div className="field-item" key={id}>
-          {isSaved ? (
-            <SavedFieldView field={{ id, ...fieldProps }} />
-          ) : (
-            <EditFieldView field={{ id, ...fieldProps }} />
-          )}
-        </div>
-      ))}
+      <RenderForm formConfig={formConfig} />
       <input
-        disabled={!isSaved || !isFormValid}
+        disabled={!isAllSaved || !isFormValid}
         type="submit"
+        onClick={submitForm}
         style={{
           width: "40%",
           padding: "12px 20px",
@@ -38,27 +57,9 @@ const AllFields = ({ isSubmitted }) => {
           borderRadius: 12,
           fontWeight: "bolder",
           fontSize: 16,
-          backgroundColor: isSubmitted ? "green" : "white",
-          color: isSubmitted ? "white" : "black",
         }}
-        value={isSubmitted ? "Submitted" : "Submit"}
+        value={"Submit"}
       />
-      {isSubmitted && (
-        <input
-          onClick={newForm}
-          style={{
-            width: "30%",
-            textAlign: "center",
-            padding: "12px 20px",
-            outline: "none",
-            borderRadius: 12,
-            fontWeight: "bolder",
-            fontSize: 16,
-            marginTop: 20,
-          }}
-          value="New Form"
-        />
-      )}
     </div>
   );
 };

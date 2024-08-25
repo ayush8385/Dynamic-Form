@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./index.css";
 import { FormContext } from "../../context/FormContext";
+import { FormConfigContext } from "../../context/FormConfigContext";
 
 const validateField = (field, value) => {
   let errorMessage = "";
@@ -51,7 +52,8 @@ const validateFile = (file) => {
 };
 
 const FieldInput = ({ field }) => {
-  const { formFields, setFormFields } = useContext(FormContext);
+  const { setFormConfig } = useContext(FormConfigContext);
+
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -66,8 +68,8 @@ const FieldInput = ({ field }) => {
 
     setError(validation?.error);
 
-    setFormFields((prev) =>
-      prev.map((item) =>
+    setFormConfig((prev) =>
+      prev?.map((item) =>
         item.id === field.id
           ? {
               ...item,
@@ -98,8 +100,7 @@ const FieldInput = ({ field }) => {
           />
           {field?.subType === "file" && (
             <span style={{ fontSize: 14 }}>
-              Selected File:{" "}
-              {formFields.find((item) => item.id === field.id)?.value || ""}
+              Selected File: {field?.value || ""}
             </span>
           )}
         </>
@@ -109,7 +110,7 @@ const FieldInput = ({ field }) => {
           minLength={field?.minLength}
           className="field-input"
           type={field.subType}
-          value={formFields.find((item) => item.id === field.id)?.value || ""}
+          value={field?.value || ""}
           onChange={handleChange}
           placeholder={field.placeholder}
         />
@@ -120,7 +121,7 @@ const FieldInput = ({ field }) => {
 };
 
 const FieldTextarea = ({ field }) => {
-  const { formFields, setFormFields } = useContext(FormContext);
+  const { setFormConfig } = useContext(FormConfigContext);
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -128,7 +129,7 @@ const FieldTextarea = ({ field }) => {
     const validation = validateField(field, value);
     setError(validation?.error);
 
-    setFormFields((prev) =>
+    setFormConfig((prev) =>
       prev.map((item) =>
         item.id === field.id
           ? {
@@ -141,7 +142,6 @@ const FieldTextarea = ({ field }) => {
       )
     );
   };
-  const value = formFields.find((item) => item.id === field.id)?.value
 
   return (
     <div className="field-container">
@@ -151,24 +151,26 @@ const FieldTextarea = ({ field }) => {
         className="field-textarea"
         rows={5}
         placeholder={field.placeholder}
-        value={value || ""}
+        value={field?.value || ""}
         onChange={handleChange}
       />
-      <span style={{fontSize: 12, marginTop: 2}}>{value?.length || 0}/{field?.maxLength || 1000}</span>
+      <span style={{ fontSize: 12, marginTop: 2 }}>
+        {field?.value?.length || 0}/{field?.maxLength || 1000}
+      </span>
       {error && <span className="error">{error}</span>}
     </div>
   );
 };
 
 const FieldSelect = ({ field }) => {
-  const { formFields, setFormFields } = useContext(FormContext);
+  const { setFormConfig } = useContext(FormConfigContext);
   const [error, setError] = useState("");
 
   const handleChange = (value) => {
     const validation = validateField(field, value);
     setError(validation?.error);
 
-    setFormFields((prev) =>
+    setFormConfig((prev) =>
       prev.map((item) =>
         item.id === field.id
           ? {
@@ -190,7 +192,7 @@ const FieldSelect = ({ field }) => {
     <div className="field-container">
       <label className="field-label">{field.label}</label>
       <select
-        value={formFields.find((item) => item.id === field.id)?.value || ""}
+        value={field?.value || ""}
         onChange={(e) => handleChange(e.target.value)}
         className="field-select"
       >
@@ -206,21 +208,20 @@ const FieldSelect = ({ field }) => {
 };
 
 const FieldCheckbox = ({ field }) => {
-  const { formFields, setFormFields } = useContext(FormContext);
+  const { formConfig, setFormConfig } = useContext(FormConfigContext);
   const [error, setError] = useState("");
 
   const handleChange = (optionValue, isChecked) => {
-    const updatedValues =
-      formFields.find((item) => item.id === field.id)?.value || [];
+    const oldValues = field?.value || [];
 
     const newValues = isChecked
-      ? [...updatedValues, optionValue]
-      : updatedValues.filter((value) => value !== optionValue);
+      ? [...oldValues, optionValue]
+      : oldValues.filter((value) => value !== optionValue);
 
     const validation = validateField(field, newValues);
     setError(validation?.error);
 
-    setFormFields((prev) =>
+    setFormConfig((prev) =>
       prev.map((item) =>
         item.id === field.id
           ? {
@@ -245,9 +246,7 @@ const FieldCheckbox = ({ field }) => {
               className="field-option-input"
               id={option.id}
               value={option.value}
-              checked={formFields
-                .find((item) => item.id === field.id)
-                ?.value?.includes(option.value)}
+              checked={field?.value?.includes(option.value)}
               onChange={(e) => handleChange(option.value, e.target.checked)}
             />
             <label className="field-option-label">{option.value}</label>
@@ -260,14 +259,14 @@ const FieldCheckbox = ({ field }) => {
 };
 
 const FieldRadio = ({ field }) => {
-  const { formFields, setFormFields } = useContext(FormContext);
+  const { setFormConfig } = useContext(FormConfigContext);
   const [error, setError] = useState("");
 
   const handleChange = (optionValue) => {
     const validation = validateField(field, optionValue);
     setError(validation.error);
 
-    setFormFields((prev) =>
+    setFormConfig((prev) =>
       prev.map((item) =>
         item.id === field.id
           ? {
@@ -292,10 +291,7 @@ const FieldRadio = ({ field }) => {
               className="field-option-input"
               id={option.id}
               value={option.value}
-              checked={
-                formFields.find((item) => item.id === field.id)?.value ===
-                option.value
-              }
+              checked={field?.value === option.value}
               onChange={() => handleChange(option.value)}
             />
             <label className="field-option-label">{option.value}</label>
