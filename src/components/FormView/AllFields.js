@@ -5,11 +5,11 @@ import { FormConfigContext } from "../../context/FormConfigContext";
 import { useNavigate } from "react-router-dom";
 
 const AllFields = () => {
-  const { formId, formConfig } = useContext(FormConfigContext);
+  const { formId, formConfig, initialConfig } = useContext(FormConfigContext);
   const isFormValid = formConfig.every((field) => field.valid);
   const isAllSaved = formConfig.every((field) => field.isSaved);
+  const isChanged = JSON.stringify(initialConfig)!==JSON.stringify(formConfig)
   const navigate = useNavigate();
-  console.log(formConfig)
 
   const submitForm = () => {
     if (isFormValid && isAllSaved) {
@@ -43,7 +43,7 @@ const AllFields = () => {
     <div className="fields-container">
       <RenderForm formConfig={formConfig} />
       <input
-        disabled={!isAllSaved || !isFormValid}
+        disabled={!isAllSaved || !isFormValid || !isChanged}
         type="submit"
         onClick={submitForm}
         style={{

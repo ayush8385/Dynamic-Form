@@ -7,7 +7,7 @@ import { FormConfigContext } from "../../context/FormConfigContext";
 
 const FormComponent = () => {
   const [showFieldConfig, setShowFieldConfig] = useState(false);
-  const { setFormId, setFormConfig } = useContext(FormConfigContext);
+  const { setFormId, setFormConfig, setInitialConfig } = useContext(FormConfigContext);
 
   const {id} = useParams();
   const location = useLocation();
@@ -16,6 +16,7 @@ const FormComponent = () => {
   useEffect(() => {
     setFormId(id);
     setFormConfig(formConfig);
+    setInitialConfig(formConfig)
   }, [id]);
 
   return (
