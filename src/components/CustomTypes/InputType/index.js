@@ -20,7 +20,9 @@ const InputType = ({ field }) => {
 
   const updateFieldInFormConfig = (updatedField) => {
     setFormConfig((prev) =>
-      prev.map((item) => (item.id === field.id ? { ...item, ...updatedField } : item))
+      prev.map((item) =>
+        item.id === field.id ? { ...item, ...updatedField } : item
+      )
     );
   };
 
@@ -43,7 +45,7 @@ const InputType = ({ field }) => {
               }
               checked={field?.required}
               type="checkbox"
-              style={{width:16, height:16}}
+              style={{ width: 16, height: 16 }}
             />
             <label className="input-type-label">Mark as Required</label>
           </label>
@@ -86,36 +88,68 @@ const InputType = ({ field }) => {
       </p>
       {showMore && (
         <div>
-          <div
-            style={{ display: "flex", flexDirection: "column", marginTop: 16 }}
-          >
-            <label className="input-type-label">Max</label>
-            <input
-              className="input-type-input"
-              type="number"
-              value={field?.maxLength || ""}
-              onChange={(e) => {
-                updateFieldInFormConfig({ maxLength: e.target.value });
-                validate(e.target.value, "max length");
+          {field?.subType === "file" ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginTop: 16,
               }}
-              placeholder="Set Maximum Length"
-            />
-          </div>
-          <div
-            style={{ display: "flex", flexDirection: "column", marginTop: 16 }}
-          >
-            <label className="input-type-label">Min</label>
-            <input
-              className="input-type-input"
-              type="number"
-              value={field?.minLength || ""}
-              onChange={(e) => {
-                updateFieldInFormConfig({ minLength: e.target.value });
-                validate(e.target.value, "min length");
-              }}
-              placeholder="Set Minimum Length"
-            />
-          </div>
+            >
+              <label className="input-type-label">Max Size(in MB)</label>
+              <input
+                className="input-type-input"
+                type="number"
+                value={field?.maxFileSize || ""}
+                onChange={(e) => {
+                  updateFieldInFormConfig({ maxFileSize: e.target.value });
+                  validate(e.target.value, "max file size");
+                }}
+                placeholder="Set Maximum Size for File"
+              />
+            </div>
+          ) : (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginTop: 16,
+                }}
+              >
+                <label className="input-type-label">Max</label>
+                <input
+                  className="input-type-input"
+                  type="number"
+                  value={field?.maxLength || ""}
+                  onChange={(e) => {
+                    updateFieldInFormConfig({ maxLength: e.target.value });
+                    validate(e.target.value, "max length");
+                  }}
+                  placeholder="Set Maximum Length"
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginTop: 16,
+                }}
+              >
+                <label className="input-type-label">Min</label>
+                <input
+                  className="input-type-input"
+                  type="number"
+                  value={field?.minLength || ""}
+                  onChange={(e) => {
+                    updateFieldInFormConfig({ minLength: e.target.value });
+                    validate(e.target.value, "min length");
+                  }}
+                  placeholder="Set Minimum Length"
+                />
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

@@ -32,9 +32,9 @@ const validateField = (field, value) => {
   };
 };
 
-const validateFile = (file) => {
-  const allowedTypes = ["image/jpeg", "image/png", "application/pdf"]; // File type to be accepted
-  const maxSize = 1 * 1024 * 1024; // Size of File max 1MB
+const validateFile = (file, field) => {
+  const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+  const maxSize = (field?.maxFileSize || 10 )* 1024 * 1024;
   let errorMessage = "";
   if (!file) {
     errorMessage = "No file selected";
@@ -82,7 +82,7 @@ const FieldInput = ({ field }) => {
 
     if (field?.subType === "file") {
       const file = e.target.files[0];
-      validation = validateFile(file);
+      validation = validateFile(file, field);
       value = file?.name;
     }
 
