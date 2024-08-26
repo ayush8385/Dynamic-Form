@@ -51,10 +51,14 @@ const validateFile = (file) => {
   };
 };
 
-const EditField = ({fieldId}) => {
-  const {formConfig, setFormConfig} = useContext(FormConfigContext)
+const EditField = ({ fieldId }) => {
+  const { formConfig, setFormConfig } = useContext(FormConfigContext);
   const editField = () => {
-    setFormConfig((prev)=> prev.map((field)=> field.id===fieldId ? {...field, isSaved:false}: field))
+    setFormConfig((prev) =>
+      prev.map((field) =>
+        field.id === fieldId ? { ...field, isSaved: false } : field
+      )
+    );
   };
   return (
     <img
@@ -100,7 +104,10 @@ const FieldInput = ({ field }) => {
 
   return (
     <div className="field-container">
-      <label className="field-label">{field.label}</label>
+      <label className="field-label">
+        {field?.required ? "*" : ""}
+        {field.label}
+      </label>
       {field?.subType === "file" ? (
         <>
           <input
