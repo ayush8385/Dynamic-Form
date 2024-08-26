@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./index.css";
-import { FormContext } from "../../context/FormContext";
 import { FormConfigContext } from "../../context/FormConfigContext";
 
 const validateField = (field, value) => {
@@ -208,7 +207,7 @@ const FieldSelect = ({ field }) => {
 };
 
 const FieldCheckbox = ({ field }) => {
-  const { formConfig, setFormConfig } = useContext(FormConfigContext);
+  const { setFormConfig } = useContext(FormConfigContext);
   const [error, setError] = useState("");
 
   const handleChange = (optionValue, isChecked) => {

@@ -43,6 +43,7 @@ const InputType = ({ field }) => {
               }
               checked={field?.required}
               type="checkbox"
+              style={{width:16, height:16}}
             />
             <label className="input-type-label">Mark as Required</label>
           </label>

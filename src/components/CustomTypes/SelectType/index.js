@@ -94,7 +94,7 @@ const SelectType = ({ field }) => {
 
       <div style={{ display: "flex", flexDirection: "column", marginTop: 20 }}>
         <label className="select-type-label">Options</label>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        {field?.subTypeOptions?.length > 0 && <div style={{ display: "flex", alignItems: "center" }}>
           <select className="select-type-select" style={{ flex: 1 }}>
             {field?.subTypeOptions?.map((option) => (
               <option key={option.id}>{option.value}</option>
@@ -106,7 +106,7 @@ const SelectType = ({ field }) => {
             type="button"
             value={showEditOptions ? "Hide Options" : "Edit Options"}
           />
-        </div>
+        </div>}
       </div>
 
       {showEditOptions && (

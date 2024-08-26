@@ -3,7 +3,8 @@
     flex-direction: column;
   }
   .input-type-label {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: bold;
   }
   .input-type-input {
     margin-top: 4px;
@@ -11,6 +12,8 @@
     outline: none;
     border: none;
     font-size: 14px;
+    border: 2px solid black;
+    box-shadow: 10px 10px 15px grey;
     padding: 14px 10px;
   }
   .input-type-toggle {

@@ -51,6 +51,7 @@ const AllFields = () => {
           padding: "12px 20px",
           outline: "none",
           borderRadius: 12,
+          marginTop: 18,
           fontWeight: "bolder",
           fontSize: 16,
         }}

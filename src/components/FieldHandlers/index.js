@@ -6,11 +6,11 @@ const FieldHandlers = ({ field }) => {
   const { setFormConfig } = useContext(FormConfigContext);
 
   const insertField = () => {
-    if (field?.label === "") return;
+    if (!field?.label || field?.label === "") return;
     if (
       field?.type === "input" &&
       field?.subType !== "file" &&
-      field?.placeholder === ""
+      (!field?.placeholder || field?.placeholder === "")
     )
       return;
 
@@ -18,27 +18,18 @@ const FieldHandlers = ({ field }) => {
       field?.type
     );
 
-    if (isSelectableField && field?.subTypeOptions.length === 0) return;
+    if (isSelectableField && (field?.subTypeOptions|| []).length === 0) return;
 
     setFormConfig((prev) =>
       prev.map((item) =>
         item?.id === field?.id ? { ...item, ...field, isSaved: true, valid: field?.required ? false: true } : item
       )
     );
-    // clearStates();
   };
 
   const removeField = () => {
     setFormConfig((prev) => prev.filter((item) => item.id !== field.id));
-    // clearStates();
   };
-
-  // const clearStates = () => {
-  //   console.log('remove', formConfig, field?.id)
-  //   setFormConfig((prev) =>
-  //     prev.map((item) => (item.id === field.id ?  : item))
-  //   );
-  // };
 
   return (
     <div className="field-handlers-container">

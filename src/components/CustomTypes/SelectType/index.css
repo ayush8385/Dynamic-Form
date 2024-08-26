@@ -4,14 +4,16 @@
   }
   
   .select-type-label {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: bold;
   }
   .select-type-input,
   .select-type-select {
     margin-top: 4px;
     border-radius: 8px;
+    border: 2px solid black;
+    box-shadow: 10px 10px 15px grey;
     outline: none;
-    border: none;
     font-size: 14px;
     margin-right: 10px;
     padding: 14px 10px;
