@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./index.css";
 import { FormConfigContext } from "../../context/FormConfigContext";
+import EditIcon from "../../assets/edit.png";
 
 const validateField = (field, value) => {
   let errorMessage = "";
@@ -48,6 +49,22 @@ const validateFile = (file) => {
     error: errorMessage,
     valid: !errorMessage,
   };
+};
+
+const EditField = ({fieldId}) => {
+  const {formConfig, setFormConfig} = useContext(FormConfigContext)
+  const editField = () => {
+    setFormConfig((prev)=> prev.map((field)=> field.id===fieldId ? {...field, isSaved:false}: field))
+  };
+  return (
+    <img
+      onClick={editField}
+      src={EditIcon}
+      width={26}
+      height={26}
+      style={{ marginLeft: 20, alignSelf: "end", marginBottom: 10 }}
+    />
+  );
 };
 
 const FieldInput = ({ field }) => {
@@ -237,7 +254,7 @@ const FieldCheckbox = ({ field }) => {
   return (
     <div className="field-container">
       <label className="field-label">{field.label}</label>
-      <div>
+      <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
         {field?.subTypeOptions?.map((option) => (
           <div key={option.id} className="field-option">
             <input
@@ -282,7 +299,7 @@ const FieldRadio = ({ field }) => {
   return (
     <div className="field-container">
       <label className="field-label">{field.label}</label>
-      <div>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
         {field?.subTypeOptions?.map((option) => (
           <div key={option.id} className="field-option">
             <input
@@ -305,15 +322,40 @@ const FieldRadio = ({ field }) => {
 const SavedFieldView = ({ field }) => {
   switch (field.type) {
     case "input":
-      return <FieldInput field={field} />;
+      return (
+        <div style={{ display: "flex" }}>
+          <FieldInput field={field} />
+          <EditField fieldId={field?.id} />
+        </div>
+      );
     case "textarea":
-      return <FieldTextarea field={field} />;
+      return (
+        <div style={{ display: "flex" }}>
+          <FieldTextarea field={field} />
+          <EditField fieldId={field?.id} />
+        </div>
+      );
     case "select":
-      return <FieldSelect field={field} />;
+      return (
+        <div style={{ display: "flex" }}>
+          <FieldSelect field={field} />
+          <EditField fieldId={field?.id} />
+        </div>
+      );
     case "checkbox":
-      return <FieldCheckbox field={field} />;
+      return (
+        <div style={{ display: "flex" }}>
+          <FieldCheckbox field={field} />
+          <EditField fieldId={field?.id} />
+        </div>
+      );
     case "radio":
-      return <FieldRadio field={field} />;
+      return (
+        <div style={{ display: "flex" }}>
+          <FieldRadio field={field} />
+          <EditField fieldId={field?.id} />
+        </div>
+      );
     default:
       return null;
   }

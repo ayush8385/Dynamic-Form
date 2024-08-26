@@ -29,6 +29,7 @@
   }
   .field-option {
     margin-top: 10px;
+    margin-right: 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -41,8 +42,6 @@
   
   .field-option-label {
     font-size: 16px;
-    margin-left: 8px;
-    padding: 8px;
     border-radius: 8px;
     border: none;
     outline: none;
