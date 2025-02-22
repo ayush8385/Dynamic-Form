@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 Clone the Project to your local machine:
-<!-- HEllo -->
+
 ### `npm install`
 
 Installs the necessary modules for the app before starting the app\
